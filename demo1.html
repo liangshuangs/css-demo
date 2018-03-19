@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tengxun moeny</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        a{
+            text-decoration: none;
+        }
+        .page_hd{
+            height: 60px;
+            background-color: #cccccc;
+            line-height: 60px;
+            padding-left: 20px;
+            font-size: 16px;
+            color:#716F76;
+        }
+        .grids>a{
+            display: inline-block;
+            float: left;
+            box-sizing: border-box;
+            width: 33.33%;
+            height: 50px;
+            line-height: 50px;
+            background-color: #FFFFFF;
+            color: #707070;
+            text-align: center;
+            border-bottom: 1px solid #E5E5E5;
+        }
+        .grids>a:not(:nth-child(3n)){
+            border-right: 1px solid #E5E5E5;
+        }
+        /*flex方法start*/
+        /*.grids{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .grids>a{
+            flex: 0 0 33.33%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            box-sizing: border-box;
+
+        }
+        .grids>a:not(:nth-child(3n)){
+            border-right: 1px solid #E5E5E5;
+        }
+        .grids>a{
+            border-bottom:1px solid #E5E5E5 ;
+            background-color: #FFFFFF;
+            color: #707070;
+        }*/
+        /*flex方法end*/
+       /* grid方法 start*/
+        /*.grids{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            grid-template-rows: repeat(3,50px);
+        }
+        .grids>a{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #FFFFFF;
+            color: #707070;
+        }
+        .grids>a:not(:nth-child(3n)){
+            border-right: 1px solid #E5E5E5;
+        }
+        .grids>a{
+            border-bottom: 1px solid #E5E5E5;
+        }*/
+        /* grid方法 end*/
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page_hd">
+            <p class="page_title">腾讯服务</p>
+        </div>
+        <!--九宫格start-->
+        <div class="grids">
+            <a href="#">
+                <p class="grid_label">信用卡还款</p>
+            </a>
+            <a href="#">
+                <p class="grid_label">微粒贷借钱</p>
+            </a>
+            <a href="#">
+                <p class="grid_label">手机充值</p>
+            </a>
+            <a href="#">
+                <p class="grid_label">理财通</p>
+            </a>
+            <a href="#">
+                <p class="grid_label">生活缴费</p>
+            </a>
+            <a href="#">
+                <p class="grid_label">Q币充值</p>
+            </a>
+            <a href="#">
+                <p class="grid_label">城市服务</p>
+            </a>
+            <a href="#">
+                <p class="grid_label">腾讯公益</p>
+            </a>
+            <a href="#">
+            </a>
+        </div>
+        <!--九宫格end-->
+    </div>
+</body>
+</html>

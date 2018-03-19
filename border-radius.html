@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>border-radius</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .div{
+            margin-top: 20px;
+        }
+        .radius{
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: #fb3;
+            border-radius: 50%;
+        }
+        .radius1{
+            width: 200px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: #fb3;
+            border-radius: 50%;
+        }
+        .radius2{
+            width: 200px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: #fb3;
+            border-radius: 50% 50% 0 0/100% 100% 0 0;
+        }
+        .radius3{
+            width: 200px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: #fb3;
+            border-radius: 100% 0 0 100%/50% 0 0 50%;
+        }
+        .radius4{
+            width: 200px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: #fb3;
+            border-radius: 100% 0 0 0;
+        }
+        .radius5{
+            width: 200px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: #fb3;
+            transform: skewX(-45deg);
+        }
+        .in{
+            margin: 0 auto;
+            transform: skewX(45deg);
+        }
+        .radius6{
+            position: relative;
+            width: 200px;
+            height: 100px;
+            margin: 0 auto;
+            margin-top: 20px;
+            padding-left:40px;
+
+        }
+        .radius6::before{
+            position: absolute;
+            left:0px;
+            right: 0px;
+            bottom: 0px;
+            top: 0px;
+            content: '';
+            z-index: -1;
+            background-color: #fb3;
+            transform: skew(-45deg);
+
+        }
+        .radius7{
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            margin-top: 60px;
+            background-color: #fb3;
+            transform: rotate(45deg);
+            overflow: hidden;
+        }
+        .radius7>img{
+            max-width: 100%;
+            clip-path: (50% 0,100% 50%,50% 100%,0 50%);
+        }
+        .radius8{
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            margin-top: 60px;
+            background-color: #fb3;
+            background : linear-gradient(-45deg,transparent 15px,#fb3 0);
+        }
+    </style>
+</head>
+<body>
+<div class="radius">
+
+</div>
+<div class="radius1">
+
+</div>
+<div class="radius2">
+
+</div>
+<div class="radius3">
+
+</div>
+<div class="radius4">
+
+</div>
+<div class="radius5">
+    <div class="in">
+        我们
+    </div>
+
+</div>
+<div class="radius6">
+    我们
+</div>
+<div class="radius7">
+    <img src="./img/p1.jpg" alt="">
+</div>
+<div class="radius8">
+</div>
+
+</body>
+</html>

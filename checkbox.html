@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>checkbox</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .checkbox{
+            margin: 0 auto;
+            margin-left: 20px;
+        }
+        input[type='checkbox'] + label::before{
+            content: '\a0';
+            display: inline-block;
+            vertical-align: .2em;
+            width: .8em;
+            height: .8em;
+            margin-right: .2em;
+            border-radius: .2em;
+            background: silver;
+            text-indent: .15em;
+            line-height: .45;
+        }
+        input[type='checkbox']:checked + label::before{
+            content: '\2713';
+            background: yellowgreen;
+        }
+        input[type='checkbox']{
+            position: absolute;
+            clip:rect(0,0,0,0);
+        }
+    </style>
+</head>
+<body>
+<div class="checkbox">
+    <input type="checkbox" id="awesome">
+    <label for="awesome">Awesome!</label>
+</div>
+</body>
+</html>

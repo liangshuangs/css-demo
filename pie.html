@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pie</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .pie{
+            margin: 0 auto;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: yellowgreen;
+            background-image: linear-gradient(to right,transparent 50%,#655 0);
+        }
+        @keyframes spin {
+            to {transform: rotate(.5turn)}
+        }
+        @keyframes bg {
+            50% {background: #655}
+        }
+        .pie::before{
+            content: '';
+            display: block;
+            height: 100%;
+            margin-left:50%;
+            border-radius: 0 100% 100% 0 /50%;
+            background-color: #655;
+            transform-origin: left;
+            animation: spin 3s linear infinite,
+                        bg 6s step-end infinite;
+        }
+        .box{
+            width: 300px;
+            height: 300px;
+            background-color: #ccc;
+            margin: 0 auto;
+            /*position: relative;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .middle{
+            width: 100px;
+            height: 100px;
+            background-color: yellowgreen;
+            /*position: absolute;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);*/
+        ;
+
+        }
+    </style>
+</head>
+<body>
+<!--<div class="pie">
+
+</div>-->
+<div class="box">
+    <div class="middle">middle</div>
+
+</div>
+
+</body>
+<script>
+    let a="hello word";
+    let arr = [...a].reverse().join('')
+    let array = [3]
+    console.log(Array.isArray(array))
+    var delegate = function (obj,menthd) {
+        return function () {
+            return menthd.call(obj,arguments)
+        }
+    }
+    var ClassA = function () {
+        var _color = 'red';
+        return {
+            getColor:function () {
+                console.log('clolor:'+_color);
+            },
+            setColor:function (color) {
+                _color = color;
+            }
+        }
+    }
+    var clas = new ClassA()
+    clas.setColor('blue');
+    clas.getColor()
+    var d = delegate(clas,clas.setColor)
+    d('yellow')
+    clas.getColor()
+
+    var color = [5,10,15,20]
+    color.sort()
+    console.log(color)
+</script>
+</html>

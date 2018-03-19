@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>background and border</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .div{
+            margin-top: 20px;
+        }
+
+        .container{
+            box-sizing: border-box;
+            margin: 0 auto;
+            padding: 20px;
+            width: 300px;
+            height: 300px;
+            background-color: #ff0066;
+            border:10px solid hsla(0,0%,100%,.5);
+            background-clip:padding-box;
+        }
+        .m-background{
+            width: 300px;
+            height: 300px;
+            padding: 20px;
+            margin: 0 auto;
+            margin-top: 20px;
+            box-sizing: border-box;
+            background-color: yellowgreen;
+            border-radius: 5px;
+            box-shadow: 0 0 0 10px #655;
+            outline: 10px solid  #655;
+            /*outline: 5px dashed deeppink;
+            border:10px solid #655;*/
+
+        }
+        .gradient{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            border:1px solid red;
+            background: linear-gradient(#fb2 50%,#58a 50%);
+            background-size: 100% 60px;
+        }
+        .item-g{
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+        }
+        .gradient-right{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background: linear-gradient(to right,#fb2 50%,#58a 50%);
+            background-size: 60px 100%;
+        }
+        .item-r{
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+        }
+        .gradient-repeat{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            border:1px solid red;
+            background: repeating-linear-gradient(45deg,#fb2,#fb2 15px,#58a 0,#58a 30px);
+            /*background-size: 100% 60px;*/
+        }
+        .gradient-repeat11{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            border:1px solid red;
+            background:repeating-linear-gradient(60deg,red 0,red 15px, #fb2 0,#fb2 30px);
+        }
+        .gradient-repeat2{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            border:1px solid red;
+            background:repeating-linear-gradient(30deg,hsla(0,50%,60%,.8) 0,hsla(0,50%,60%,.8) 15px, transparent 0,transparent 30px);
+
+        }
+        .gradient-repeat3{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            border:1px solid red;
+            background: #fff;
+            background: linear-gradient(90deg,rgba(200,0,0,.5) 50%,transparent 0),
+                        linear-gradient(rgba(200,0,0,.5) 50%,transparent 0);
+            background-size: 30px 30px;
+        }
+        .gradient-repeat4{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            border:1px solid red;
+            background: #58a;
+            background-image: linear-gradient(90deg,white 1px,transparent 0),
+            linear-gradient(white 1px,transparent 0);
+            background-size: 30px 30px;
+        }
+        .gradient-radial{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 20px;
+            border:1px solid red;
+            background: #58a;
+            background-image: radial-gradient(tan 30%,transparent 0);
+            background-size: 30px 30px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        我们想给这个DIV一个红色的背景和一道半透明的白色边框
+        如果不设置background-clip，边框的背景色：DIV的红色背景会透过来
+        background-clip:是规定背景的绘制区域
+        border-box(默认,背景的区域到边框盒)，padding-box（背景的区域到内边距）,content-box（背景的区域到内容框）
+    </div>
+    <div class="m-background">
+            这里是使用text-shadow做的多重边框
+    </div>
+    <div class="gradient">
+        <div class="item-g">1</div>
+        <div class="item-g">1</div>
+        <div class="item-g">1</div>
+        <div class="item-g">1</div>
+    </div>
+    <div class="gradient-right">
+        <div class="item-r"></div>
+    </div>
+    <div class="gradient-repeat">
+
+    </div>
+    <div class="gradient-repeat11">
+        background: repeating-linear-gradient(45deg,#fb2,#fb2 15px,#58a 0,#58a 30px);
+        表示45度的倾斜：#fb2,#fb2 15px－>表示0到15px是＃fb2颜色
+        ,#fb2 15px,#58a 0,->表示15px到15px是#fb2到＃58a的过渡颜色
+        #58a 0,#58a 30px->表示15px到30px是＃58a的颜色
+    </div>
+    <div class="gradient-repeat2">
+
+    </div>
+    <div class="gradient-repeat3">
+
+    </div>
+    <div class="gradient-repeat4">
+
+    </div>
+    <div class="gradient-radial">
+
+    </div>
+</body>
+</html>
