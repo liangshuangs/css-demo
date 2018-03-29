@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义checkbox、radio</title>
+    <style>
+        input{
+            display: none;
+        }
+        .checkboxWrap label{
+            position: relative;
+            width: 16px;
+            height: 16px;
+            top: 5px;
+            border: 1px solid #d9d9d9;
+            display: inline-block;
+        }
+        .checkboxWrap label::before{
+            content: '';
+            position: absolute;
+            width: 9px;
+            height: 5px;
+            left:2px;
+            top:3px;
+        }
+        .checkboxWrap input[type=checkbox]:checked+label:before{
+            border: 2px solid red;
+            border-top:none;
+            border-right: none;
+            transform: rotate(-45deg);
+        }
+        .checkboxWrap input[type=checkbox]:checked+label{
+            border: 1px solid red;
+        }
+        .radio{
+            margin-top: 20px;
+        }
+
+        .radio label{
+            display: inline-block;
+            position: relative;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            top:4px;
+            border:1px solid  #d9d9d9;
+
+        }
+        .radio label:before{
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            top:5px;
+            border-radius: 50%;
+            top: 4px;
+            left: 4px;
+        }
+        .radio input[type=radio]:checked+label:before{
+            background-color: red;
+        }
+        .radio input[type=radio]:checked+label{
+            border:1px solid red;
+        }
+
+    </style>
+</head>
+<body>
+<div class="checkboxWrap">
+    <input type="checkbox" id="checkBox">
+    <label for="checkBox"></label>
+    checkbox
+</div>
+<div class="radio">
+    <input type="radio" id="radio">
+    <label for="radio"></label>
+    radio
+</div>
+
+</body>
+</html>
