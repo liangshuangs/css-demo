@@ -61,41 +61,11 @@
 
 </div>-->
 <div class="box">
-    <div class="middle">middle</div>
-
+    <video controls="controls" autoplay="autoplay">
+        <source src="./img/baa43.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
 </div>
 
 </body>
-<script>
-    let a="hello word";
-    let arr = [...a].reverse().join('')
-    let array = [3]
-    console.log(Array.isArray(array))
-    var delegate = function (obj,menthd) {
-        return function () {
-            return menthd.call(obj,arguments)
-        }
-    }
-    var ClassA = function () {
-        var _color = 'red';
-        return {
-            getColor:function () {
-                console.log('clolor:'+_color);
-            },
-            setColor:function (color) {
-                _color = color;
-            }
-        }
-    }
-    var clas = new ClassA()
-    clas.setColor('blue');
-    clas.getColor()
-    var d = delegate(clas,clas.setColor)
-    d('yellow')
-    clas.getColor()
-
-    var color = [5,10,15,20]
-    color.sort()
-    console.log(color)
-</script>
 </html>

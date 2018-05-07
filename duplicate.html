@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>three.js webgl - equirectangular video panorama</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px; width: 100%;
+            color: #ffffff;
+            padding: 5px;
+            font-family:Monospace;
+            font-size:13px;
+            font-weight: bold;
+            text-align:center;
+        }
+        #video {
+            width: 300px;
+            height: 200px;
+        }
+
+        a {
+            color: #ffffff;
+        }
+    </style>
+    <script src="js/three.js"></script>
+</head>
+<body>
+
+<div id="container">
+    <!--<video controls="controls" autoplay="autoplay" id="video">
+        <source src="./img/baa43.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>-->
+</div>
+
+<script>
+    //原理：通过three.js建立一个球模型,将视频贴到球模型上,通过矩阵变换将视频贴到模型内部,观察点不动,通过鼠标拖动,改变相机的位置来实现全景视频的观看。
+    //当然需要将模型添加到场景中，通过渲染器不断的渲染
+    var camera, scene, renderer;
+    var texture_placeholder,//多余代码
+        isUserInteracting = false,//鼠标按下的标志，开始鼠标没有按下为false
+        onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+        lon = 0,//记录水平方向的偏角,即水平角
+        <span style="white-space:pre;">     </span>onMouseDownLon = 0,//多余代码
+        lat = 0,//记录竖直方向的偏角,即仰俯角
+            <span style="white-space:pre;">     </span>onMouseDownLat = 0,//多余代码
+        phi = 0,//在three.js中 phi代表与xoy平面的夹角,即仰俯角
+            <span style="white-space:pre;">     </span>theta = 0, //theta代表与xoy平面的夹角, 即水平角
+        distance = 500,//观察点到相机的距离,即球半径
+        onPointerDownPointerX = 0,//记录鼠标按下瞬间的屏幕x值
+        onPointerDownPointerY = 0,//记录鼠标按下瞬间的屏幕x值
+        onPointerDownLon = 0,//记录上一次鼠标水平移动的角度.
+        onPointerDownLat = 0;//记录上一次鼠标竖直移动的角度.
+
+    init();
+    animate();
+
+    function init() {
+
+        var container, mesh;
+
+        container = document.getElementById( 'container' );
+
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);//透视投影,即远景相机,模仿人眼
+        camera.target = new THREE.Vector3( 0, 0, 0 );//初始化相机观察点
+
+        scene = new THREE.Scene();//初始化场景
+
+        var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );//建立半径为500,水平垂直分割面分别为60,40的缓冲球面
+        geometry.scale(  -1, 1, 1 );//进行缩放，进行矩阵变换,将视频贴在球内表面
+
+        var video = container.createElement( 'video' );
+        video.width = 640;
+        video.height = 360;
+        video.loop = true;//视频是否循环
+        video.muted = true;//是否关闭音频
+        video.src = "./img/baa43.mp4";
+       video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
+        video.play();
+        var texture = new THREE.VideoTexture( video );//视频纹理
+
+        texture.minFilter = THREE.LinearFilter;//纹理在缩小时的过滤方式,默认THREE.LinearMipMapNearestFilter选择最临近的mip层，并执行线性过滤
+        texture.format = THREE.RGBFormat;//像素数据的颜色格式, 默认为THREE.RGBAFormat,还有以下可选参数
+        //THREE.AlphaFormat = 1019; //GL_ALPHA  Alpha 值
+        //THREE.RGBFormat = 1020;       //Red, Green, Blue 三原色值
+        //THREE.RGBAFormat = 1021;  //Red, Green, Blue 和 Alpha 值
+        //THREE.LuminanceFormat = 1022; //灰度值
+        //THREE.LuminanceAlphaFormat = 1023;    //灰度值和 Alpha 值
+
+        var material = new THREE.MeshBasicMaterial({ map: texture });//基础网孔材料
+
+        mesh = new THREE.Mesh( geometry, material );
+
+        scene.add( mesh );
+
+        renderer = new THREE.WebGLRenderer();//webGL渲染器
+        renderer.setPixelRatio(window.devicePixelRatio);//返回当前设备的像素比
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+
+        divdeo.addEventListener( 'mousedown', onDocumentMouseDown, false );
+        divdeo.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        divdeo.addEventListener( 'mouseup', onDocumentMouseUp, false );
+        document.addEventListener( 'wheel', onDocumentMouseWheel, false );
+
+        //
+
+        window.addEventListener( 'resize', onWindowResize, false );
+
+    }
+
+    function onWindowResize() {
+        <span style="white-space:pre;"> </span>//自适应
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+    <span style="white-space:pre;">     </span>//鼠标按下
+    function onDocumentMouseDown( event ) {
+
+        event.preventDefault();//阻止默认行为
+
+        isUserInteracting = true;
+
+        onPointerDownPointerX = event.clientX;
+        onPointerDownPointerY = event.clientY;
+
+        onPointerDownLon = lon;
+        onPointerDownLat = lat;
+
+    }
+
+    function onDocumentMouseMove( event ) {
+        if ( isUserInteracting === true ) {
+            <span style="white-space:pre;"> </span>//按下并移动,计算移动的角度
+            lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+            lat = (  onPointerDownPointerY -event.clientY ) * 0.1 + onPointerDownLat;
+        }
+
+    }
+    <span style="white-space:pre;">     </span>//鼠标抬起
+    function onDocumentMouseUp( event ) {
+
+        isUserInteracting = false;
+
+    }
+    <span style="white-space:pre;">     </span>//鼠标滚轮操作,改变相机位置
+    function onDocumentMouseWheel( event ) {
+
+        distance += event.deltaY * 0.05;
+
+    }
+
+    function animate() {
+
+        requestAnimationFrame( animate );
+        update();
+
+    }
+
+    function update() {
+        <span style="white-space:pre;"> </span>//将角度转化为弧度
+        lat = Math.max( - 85, Math.min( 85, lat ) );
+        phi = THREE.Math.degToRad( 90 - lat );
+        theta = THREE.Math.degToRad( lon );
+        <span style="white-space:pre;">      </span> //球面坐标计算公式,相当于相机在球面移动,观察点不动
+        camera.position.x = distance * Math.sin( phi ) * Math.cos( theta );
+        camera.position.y = distance * Math.cos( phi );
+        camera.position.z = distance * Math.sin( phi ) * Math.sin( theta );
+
+        camera.lookAt( camera.target );
+
+        /*
+         // distortion
+         camera.position.copy( camera.target ).negate();
+         */
+        //渲染
+        renderer.render( scene, camera );
+
+    }

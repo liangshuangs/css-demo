@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d全景图</title>
+    <script src="../js/three.js"></script>
+</head>
+<style>
+    body {
+        background-color: #000;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    #container {
+        width: 500px;
+        height: 300px;
+    }
+</style>
+<body>
+<div id="container">
+    
+</div>
+</body>
+<script>
+    var camera,scene,renderer;// 相机，场景，渲染器
+    var flag = false,
+    onMouseDownX = 0, 
+    onMouseDownY = 0,
+    onMouseDownLon = 0,
+    onMouseDownLat = 0,
+    container,
+    width = 0,
+    height = 0,
+    lat = 0,
+    lan = 0,
+    phi = 0,
+    theta = 0;
+    init();
+    animate()
+    function init() {
+        var mesh;
+        container = document.getElementById('container');
+        width = container.offsetWidth;
+        height = container.offsetHeight;
+        camera = new THREE.PerspectiveCamera(75,width / height,1,1000) // 透视投影照相机
+        camera.target = new THREE.Vector3(0,0,0) // 设置相机所看的位置
+
+        scene = new THREE.Scene();//场景
+        var geometry = new THREE.SphereGeometry(500,60,40) // 创建一个球体
+
+        geometry.scale(-1,1,1) // 将球体的面朝内
+
+        var material = new THREE.MeshBasicMaterial( { //使用基本材质（BasicMaterial）的物体，渲染后物体的颜色始终为该材质的颜色，不会由于光照产生明暗、阴影效果
+            map: new THREE.TextureLoader().load( '../img/2.jpeg' )
+        } );
+
+        mesh = new THREE.Mesh( geometry, material );//Mesh（图元装配函数）   生成三维物体
+
+        scene.add( mesh );//网格添加到场景中
+
+        renderer = new THREE.WebGLRenderer();//定义渲染器
+        renderer.setPixelRatio( window.devicePixelRatio )
+        renderer.setSize(width,height)
+        container.appendChild( renderer.domElement );//将场景加入到画面
+
+        container.addEventListener('mousedown',onMouseDown,false)
+        container.addEventListener('mousemove',onMouseMove,false)
+        container.addEventListener('mouseup',onMouseUp,false)
+        container.addEventListener('wheel',onMouseWheel,false)
+        window.addEventListener( 'resize', onWindowResize, false );
+    }
+    function onMouseDown( event ) {
+
+        event.preventDefault();
+
+        flag = true;
+
+        onPointerDownPointerX = event.clientX;
+        onPointerDownPointerY = event.clientY;
+
+        onPointerDownLon = lan;
+        onPointerDownLat = lat;
+    }
+    function onWindowResize() {
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( width, height );
+
+    }
+    function onMouseMove( event ) {
+
+        if ( flag === true ) {
+
+            lan = ( onPointerDownPointerX - event.clientX ) + onPointerDownLon;
+            lat = ( - event.clientY + onPointerDownPointerY ) + onPointerDownLat;
+
+
+        }
+
+    }
+
+    function onMouseUp( event ) {
+
+        isUserInteracting = false;
+
+    }
+
+    function onMouseWheel( event ) {
+
+        camera.fov += event.deltaY * 0.05;
+        camera.updateProjectionMatrix();
+
+    }
+    function animate() {
+        requestAnimationFrame( animate );
+        update();
+    }
+    function update() {
+
+        if ( flag === false ) {
+
+            //lon += 0.1;
+
+        }
+
+        lat = Math.max( - 85, Math.min( 85, lat ) );
+        phi = THREE.Math.degToRad( 90 - lat );
+        theta = THREE.Math.degToRad( lan );
+
+        camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+        camera.target.y = 500 * Math.cos( phi );
+        camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+        camera.lookAt( camera.target );
+
+        /*
+         // distortion
+         camera.position.copy( camera.target ).negate();
+         */
+
+        renderer.render( scene, camera );
+
+    }
+    function q8(x) {
+
+        /*return function (y) {
+            return function (z) {
+                return x+y+z
+            }
+        }*/
+        }
+    console.log(q8(1)(2)(3))
+    
+
+</script>
+</html>

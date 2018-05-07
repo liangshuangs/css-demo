@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正则匹配</title>
+</head>
+<body>
+
+</body>
+<script>
+    // 判断时候有数字，并将数字找出来
+    function findNum(str) {
+        let reg = /(\d)/g
+        let val = []
+        str.replace(reg,function (word) {
+            val.push(word)
+        })
+        return val
+    }
+    // 判断连续重复的字母
+    function containsRepeat(str) {
+        return /([a-zA-Z])\1+/.test(str)
+    }
+    // 判断是否是以元音字母结尾
+    function checkEndWithVol(str) {
+        return /[a,e,i,o,u]$/i.test(str)
+    }
+    /*给定字符串 str，检查其是否包含 3 个连续的数字
+    1、如果包含，返回最新出现的 3 个数字的字符串
+    2、如果不包含，返回 false*/
+    function checkThreeNumbers(str) {
+        var res
+        if (res = str.match(/\d{3}/g)){
+            return res
+        }else {
+            return false
+        }
+    }
+    //判断是否符合指定格式
+    /*
+    * 给定字符串 str，检查其是否符合如下格式
+     1、XXX-XXX-XXXX
+     2、其中 X 为 Number 类型*/
+    function matchPattern(str) {
+        return /^(\d{3}-){2}\d{4}$/.test(str) // (\d{3}-){2}出现2次即XXX-XXX-，然后就是匹配\d{4}
+    }
+    //匹配日期
+    function checkDate(str) {
+        let reg = /(\d{4})-(\d{2})-(\d{2})/
+        return str.replace(reg,'$3/$2/$1')
+        //return /(\d{4})-(\d{2})-(\d{2})/.test(str)
+
+    }
+    //console.log(checkDate("2018-05-06"))
+    function checkDates(str) {
+        let reg = /(\d{4})(-|\/|.)(\d{2}\2(\d{2}))/
+        return reg.test(str) // \2为前面匹配的第二分组
+    }
+    function changeDates(str) {
+        let reg = /(\d{4})(-|\/|.)(\d{2}\2(\d{2}))/
+        return reg.test(str) // \2为前面匹配的第二分组
+    }
+    //console.log(checkDates("2018.05.06"))
+    /*
+    * 判断是否符合 USD 格式
+    * 给定字符串 str，检查其是否符合美元书写格式
+     1、以 $ 开始
+     2、整数部分，从个位起，满 3 个数字用 , 分隔
+     3、如果为小数，则小数部分长度为 2
+     4、正确的格式如：$1,023,032.03 或者 $2.03，错误的格式如：$3,432,12.12 或者 $34,344.3
+    * */
+    function isUSD(str) {
+        return /^\$(?=(\d))$/g.test(str)
+    }
+    //console.log(isUSD('$566'))
+    
+    //非捕获分组
+    function noRecipt(str) {
+        let reg = /a(?:(bc))+/g
+        return str.match(reg)
+    }
+    // 每个单词的首字母转成大写
+    function titleize(str) {
+        let reg = /\b(\w)/g
+        //return str.match(reg)
+        return str.replace(reg,function (word) {
+            return word.toUpperCase()
+        })
+    }
+    // 驼峰表示法
+    function changeShow(str) {
+        let reg = /(\s).{1}/g
+        return str.replace(reg,function (word) {
+            console.log(word)
+            return word.toUpperCase()
+        })
+    }
+    // 匹配成对标签
+   function checkSymbol(str) {
+       let reg = /<([^>]+)>[\d\D]*<(\/\1)>/g // [\d\D] \1反向引用前面第一个（）
+       return reg.test(str)
+   }
+    //非贪婪匹配
+    function noMore(str) {
+        let reg = /\d{2,3}?/g //  量词后面？ 表示非贪婪匹配
+        return str.match(reg)
+    }
+    //console.log(noMore("1234,456,46,33")) // ["12", "34", "45", "46", "33"]
+
+     //匹配16进制颜色值
+    function parttenColor(str) {
+        let reg = /#([0-9a-fA-f]{6}|[0-9a-fA-f]{3})/g
+        return str.match(reg)
+    }
+    //console.log(parttenColor('#ffbbad #FFF'))
+
+    //匹配时间
+    /*
+    * 共4位数字，第一位数字可以为[0-2]。
+
+     当第1位为2时，第2位可以为[0-3]，其他情况时，第2位为[0-9]。
+
+     第3位数字为[0-5]，第4位为[0-9]*/
+    function parttenTime(str) {
+        let reg = /([0-1][0-9]|[0-2][0-3]):([0-5])([0-9])/g
+        return str.match(reg)
+    }
+    //console.log(parttenTime("09:40 02:10"))
+
+    //匹配日期
+    /*
+    * 分析：
+
+     年，四位数字即可，可用[0-9]{4}。
+
+     月，共12个月，分两种情况01、02、……、09和10、11、12，可用(0[1-9]|1[0-2])。
+
+     日，最大31天，可用(0[1-9]|[12][0-9]|3[01])*/
+    function parttenYear(str) {
+        let reg = /([0-9]{4})-(0[0-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g
+        return str.match(reg)
+    }
+   // console.log(parttenYear("2018-05-06"))
+
+    // 验证密码问题 密码长度6-12位，由数字、小写字符和大写字母组成，但必须至少包括2种字符。
+
+    function checkPWS(str) {
+        //let reg = /(?=.*[0-9])^[0-9a-zA-Z]{6,12}/g // 必须包含数字
+        //let reg = /(?=.*[0-9])(?=.*[a-z])^[0-9a-zA-Z]{6,12}/g // 必须同时包含数字和小些字母
+        //let reg = /(?=.*[0-9])(?=.*[A-Z])^[0-9a-zA-Z]{6,12}/g // 必须同时包含数字和大些字母
+        let reg = /((?=.*[0-9])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])|(?=.*[A-Z])(?=.*[a-z]))^[0-9a-zA-Z]{6,12}/g
+        return reg.test(str)
+    }
+    console.log(checkPWS("s44DDFF"))
+
+
+    let reg = /(\B)(?=(\d{3})+$)/g
+    console.log("342354546".replace(reg,','))
+    //let reg = /(?=o)/g
+    //var string = 'hello'
+    //console.log(string.replace(reg,"#"))
+
+    setTimeout(function(){
+        console.log('1')
+    });
+
+    new Promise(function(resolve){
+        console.log('2');
+        resolve(2)
+    }).then(function(){
+        console.log('3')
+    });
+
+    console.log('4');
+</script>
+</html>

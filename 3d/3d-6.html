@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d-6</title>
+    <script src="../js/three.js"></script>
+    <style>
+        #container{
+            width: 300px;
+            height: 300px;
+            border:1px solid red;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <p>在浏览器中操控三维元素－Three.js初体验</p>
+    <p>四要素：</p>
+    <ul>
+        <li>场景</li>
+        <li>相机</li>
+        <li>物体</li>
+        <li>渲染器</li>
+    </ul>
+</div>
+</body>
+<script>
+    function Three() {
+        this.camera;
+        this.scene;
+        this.light;
+        this.renderer;
+        this.mesh;
+        this.container;
+        this.width;
+        this.height;
+
+        this.init = function () {
+            //
+            this.container = document.getElementById('container')
+            this.width = this.container.offsetWidth
+            this.height = this.container.offsetHeight
+
+            //场景
+            this.scene = new THREE.Scene()
+
+            // 灯光
+            this.light = new THREE.DirectionalLight(0xff0000,1.0,0)
+            this.light.position.set(100,100,200)
+            this.scene.add(this.light)
+
+            // 透视相机
+            this.camera = new THREE.PerspectiveCamera(70,this.width/this.height, 1,1000);
+            this.camera.position.set(0,1000,0)
+            this.camera.lookAt(new THREE.Vector3(0,0,0))
+            this.scene.add(this.camera)
+
+            //物质 画一个网格
+            var geometry = new THREE.Geometry() // 首先，我们声明了一个几何体geometry
+            var material = new THREE.LineBasicMaterial({color:0x000000,opacoty:0.2})
+            var color1 = new THREE.Color(0x444444),
+            color2 = new THREE.Color(0xff0000);
+
+            // 在x轴上定义两个点p1(-500,0,0)，p2(500,0,0)。
+            var p1 = new THREE.Vector3(-500,0,0)
+            var p2 = new THREE.Vector3(500,0,0)
+            geometry.vertices.push(p1) //几何体里面有一个vertices变量，可以用来存放点
+            geometry.vertices.push(p2)
+
+            // 这两个点决定了x轴上的一条线段，将这条线段复制20次，分别平行移动到z轴的不同位置，就能够形成一组平行的线段。
+            for (var i = 0; i <=20; i++) {
+                var line = new THREE.Line( geometry, material );
+                line.position.z = ( i * 50 ) - 500;
+                this.scene.add( line );
+
+                // 同理，将p1p2这条线先围绕y轴旋转90度，然后再复制20份，平行于z轴移动到不同的位置，也能形成一组平行线。
+                var line = new THREE.Line( geometry, material );
+                line.rotation.y = 90 * Math.PI / 180; // 旋转90度
+                line.position.x = (i * 50) - 500;
+                this.scene.add(line)
+            }
+
+            // 渲染器
+            this.renderer = new THREE.WebGLRenderer({alpha:true,antialias : true})
+            this.renderer.setSize(this.width,this.height)
+            this.container.appendChild(this.renderer.domElement)
+            this.renderer.setClearColor(0xFFFFFF, 1.0);
+
+            render()
+        }
+        render = () => {
+
+            requestAnimationFrame(render)
+            //this.mesh.rotation.x += 0.02;
+            //this.mesh.rotation.y += 0.02;
+            this.renderer.render(this.scene,this.camera)
+        }
+
+    }
+    var three = new Three()
+    three.init()
+</script>
+</html>

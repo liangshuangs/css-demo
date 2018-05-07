@@ -36,6 +36,56 @@
             to {transform: rotate(1turn)}
 
         }
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            animation: mymove 5s infinite;
+            position: relative;
+        }
+        @keyframes mymove {
+            from{left:0px}
+            to{left:200px;}
+        }
+        .box1 {
+            height: 100px;
+            width: 100px;
+            background-color: red;
+            transition:width 2s;
+            position: relative;
+        }
+        .box1:hover{
+            width: 200px;
+        }
+        #loading{
+            color:#000;
+            border-width: 4px;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: #ccc #eee red blue;
+            border-radius: 24px;
+            -webkit-animation: "loading" 1s infinite linear;/***一秒循环执行**/
+
+        }
+        @-webkit-keyframes "loading"{/**关键帧名称**/
+            0%{-webkit-transform: rotate(0deg);}
+            100%{-webkit-transform: rotate(360deg);}
+        }
+        .loading {
+            color:red;
+            border-width:40px;
+            border-style: solid;
+            width: 100px;
+            height: 100px;
+            border-radius:90px;
+            border-color: #ccc #eee red blue;
+            animation:sping 1s infinite linear;
+        }
+            @keyframes sping {
+                from{transform: rotate(0deg)}
+                to{transform: rotate(360deg)}
+            }
 
     </style>
 </head>
@@ -44,6 +94,17 @@
     <div class="avatar">
         <img src="./img/p1.jpg" alt="">
     </div>
+</div>
+<div class="box">
+
+</div>
+<div class="box1">
+
+</div>
+<div id="loading">
+
+</div>
+<div class="loading">
 
 </div>
 </body>

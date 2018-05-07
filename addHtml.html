@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态添加li</title>
+    <style>
+        ul{
+            text-decoration: none;
+            list-style: none;
+            width: 200px;
+            text-align: center;
+        }
+        li{
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid red;
+        }
+        li:not(:last-child){
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+<button id="add">添加</button>
+    <ul id ='myUl'>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+</body>
+<script>
+    //动态添加li 此方法对添加的数量较小是合适
+    /*function add() {
+        let ul = document.getElementById('myUl')
+        for(let i = 0; i < 4; i++) {
+            let li = document.createElement('li')
+            li.innerText = i+1
+            ul.appendChild(li)
+        }
+        ul.addEventListener('click', function (e) {
+            const target = e.target;
+            if (target.tagName === 'LI') {
+                alert(target.innerText);
+            }
+        });
+    }*/
+
+    //动态添加li 此方法对添加的数量较大是合适
+    function add() {
+        const total = 3000;
+        const batchSize = 4; //每次批量插入的节点
+        const batchCount = total / batchSize; //操作的次数
+        let batchDone = 0; //已批量处理的次数
+        const ul = document.getElementById('myUl')
+        if(!ul){
+            return
+        }
+        function addItems() {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < batchSize; i++) {
+                const item = document.createElement('li');
+                item.innerText = (batchSize * batchDone) + i + 1;
+                fragment.appendChild(item)
+            }
+            ul.appendChild(fragment)
+            batchDone += 1;
+            doBatchAppend()
+        }
+        function doBatchAppend() {
+            if(batchDone < batchCount) {
+                window.requestAnimationFrame(addItems)
+            }
+        }
+        doBatchAppend()
+    }
+   // add()
+
+    let ul = document.getElementById('myUl')
+    let addEle = document.getElementById('add')
+    addEle.onclick = function () {
+        let li = document.createElement('li')
+        li.innerText = document.getElementsByTagName('li').length + 1
+        ul.appendChild(li)
+    }
+
+   /* ul.onclick = function (e) {
+        let ev = e || window.event;
+        let target = ev.target
+        if (target.nodeName.toLocaleLowerCase() === 'li') {
+            ul.removeChild(target)
+        }
+    }*/
+    ul.onclick = function (e) {
+        let ev = e || window.event;
+        let target = ev.target
+        if (target.nodeName.toLocaleLowerCase() === 'li') {
+           // let li = document.createElement('li')
+            let li= target.cloneNode()
+            li.innerHTML = '3'
+            //li.innerText = document.getElementsByTagName('li').length + 2
+
+            ul.replaceChild(li,target)
+        }
+    }
+
+</script>
+</html>

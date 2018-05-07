@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d-1</title>
+    <script src="../js/three.js"></script>
+    <style>
+        #container{
+            width: 300px;
+            height: 300px;
+            border:1px solid red;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <p>在浏览器中操控三维元素－Three.js初体验</p>
+    <p>四要素：</p>
+    <ul>
+        <li>场景</li>
+        <li>相机</li>
+        <li>物体</li>
+        <li>渲染器</li>
+    </ul>
+</div>
+</body>
+<script>
+    function Three() {
+        this.camera;
+        this.scene;
+        this.light;
+        this.renderer;
+        this.mesh;
+        this.container;
+        this.width;
+        this.height;
+
+        this.init = function () {
+            //
+            this.container = document.getElementById('container')
+            this.width = this.container.offsetWidth
+            this.height = this.container.offsetHeight
+
+            //场景
+            this.scene = new THREE.Scene()
+
+            // 灯光
+            this.light = new THREE.DirectionalLight(0xff0000,1.0,0)
+            this.light.position.set(100,100,200)
+            this.scene.add(this.light)
+
+            // 透视相机
+            this.camera = new THREE.PerspectiveCamera(70,this.width/this.height, 1,1000);
+            this.camera.position.set(0,1000,0)
+            this.camera.lookAt(new THREE.Vector3(0,0,0))
+            this.scene.add(this.camera)
+
+            //物质 画一条线
+            var geometry = new THREE.Geometry() // 首先，我们声明了一个几何体geometry
+            var material = new THREE.LineBasicMaterial({vertexColors:true,Linewidth:20})
+            var color1 = new THREE.Color(0x444444),
+            color2 = new THREE.Color(0xff0000);
+            var p1 = new THREE.Vector3(-100,0,100)
+            var p2 = new THREE.Vector3(100,0,-100)
+            geometry.vertices.push(p1) //几何体里面有一个vertices变量，可以用来存放点
+            geometry.vertices.push(p2)
+            geometry.colors.push(color1,color2)
+            this.mesh = new THREE.Line(geometry,material,THREE.LinePieces)
+            this.scene.add(this.mesh)
+
+
+            // 渲染器
+            this.renderer = new THREE.WebGLRenderer({alpha:true,antialias : true})
+            this.renderer.setSize(this.width,this.height)
+            this.container.appendChild(this.renderer.domElement)
+            this.renderer.setClearColor(0xFFFFFF, 1.0);
+
+            render()
+        }
+        render = () => {
+
+            requestAnimationFrame(render)
+            //this.mesh.rotation.x += 0.02;
+            //this.mesh.rotation.y += 0.02;
+            this.renderer.render(this.scene,this.camera)
+        }
+
+    }
+    var three = new Three()
+    three.init()
+</script>
+</html>

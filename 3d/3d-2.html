@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d-2</title>
+    <script src="../js/three.js"></script>
+    <style>
+        #container{
+            width: 600px;
+            height: 600px;
+            border:1px solid red;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <p>在浏览器中操控三维元素－Three.js初体验</p>
+    <p>四要素：</p>
+    <ul>
+        <li>场景</li>
+        <li>相机</li>
+        <li>物体</li>
+        <li>渲染器</li>
+    </ul>
+</div>
+</body>
+<script>
+    function Three() {
+        this.camera;
+        this.scene;
+        this.renderer;
+        this.mesh;
+        this.container;
+        this.width;
+        this.height;
+        this.regionR = 3;
+
+        this.init = function () {
+            //
+            this.container = document.getElementById('container')
+            this.width = this.container.offsetWidth
+            this.height = this.container.offsetHeight
+
+            //场景
+            this.scene = new THREE.Scene()
+
+            // 透视相机
+            this.camera = new THREE.PerspectiveCamera(70,this.width/this.height, 1,1000);
+            this.camera.position.set(3,4,5)
+            this.camera.lookAt(new THREE.Vector3(0,0,0))
+            this.scene.add(this.camera)
+
+            //物质
+            var geometry = new THREE.CylinderGeometry(this.regionR,this.regionR,0.05,1024) // 创建一个圆
+            var material = new THREE.MeshNormalMaterial()
+            this.mesh = new THREE.Mesh(geometry,material)
+            this.scene.add(this.mesh)
+
+            addRadomCubes(50)
+
+            // 渲染器
+            this.renderer = new THREE.WebGLRenderer({alpha:true,antialias:true})
+            this.renderer.setSize(this.width,this.height)
+            this.container.appendChild(this.renderer.domElement)
+
+            render()
+        }
+        /*
+         在平面坐标系中，确定X,Y就能确定一个点的位置，在极坐标系中，确定点到圆心的距离，和一个角度就能确定这个点的位置
+         在一个圆内生成随机点
+         */
+        pointGenerator = (amount) => {
+            let polarPointsArr = []
+            for (let i = 0; i < amount; i++) {
+                let r = Math.random() * this.regionR
+                let θ = (2 * Math.PI / 360) * (Math.random() * 360)
+                polarPointsArr.push({r:r,θ:θ})
+            }
+            // 在THREE中的坐标系是直角坐标系，要将极坐标系的点转为直角坐标系
+            let cartesianPointsArr = []
+            for (let j = 0; j < polarPointsArr.length; j++) {
+                let r = polarPointsArr[j].r;
+                let θ = polarPointsArr[j].θ;
+                let x = r * Math.cos(θ);
+                let y = r * Math.sin(θ);
+                cartesianPointsArr.push({x: x, y: y});
+            }
+
+            return {polarPointsArr:polarPointsArr,cartesianPointsArr:cartesianPointsArr}
+        }
+
+        // 有了随机生成的坐标，我们需要生成方形柱，放到这些随机的坐标上
+        addRadomCubes = (amount) => {
+            let cubesArr = []
+            let randomPosition = pointGenerator(amount)
+            let polarPointsArr = randomPosition.polarPointsArr
+            let cartesianPointsArr = randomPosition.cartesianPointsArr
+            for (let i =0; i < cartesianPointsArr.length; i++) {
+                let position = cartesianPointsArr[i] // 随机位置
+                let r = polarPointsArr[i].r // 随机距离
+                let cubeMesh = new THREE.BoxGeometry(0.2,this.regionR -r , 0.2)
+                var material = new THREE.MeshNormalMaterial()
+                let cube = new THREE.Mesh(cubeMesh,material)
+                cube.position.set(position.x,(this.regionR - r) / 2 + 0.025,position.y)
+                this.scene.add(cube)
+            }
+            return {cubesArr:cubesArr,randomPosition:randomPosition}
+        }
+        render = () => {
+            requestAnimationFrame(render)
+            /*this.mesh.rotation.x += 0.02;
+            this.mesh.rotation.y += 0.02;*/
+            this.renderer.render(this.scene,this.camera)
+        }
+
+    }
+    var three = new Three()
+    three.init()
+</script>
+</html>

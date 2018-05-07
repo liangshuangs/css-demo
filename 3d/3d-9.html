@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d-1</title>
+    <script src="../js/three.js"></script>
+    <script src="../js/OrbitControls.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        /*#container{
+            width: 300px;
+            height: 300px;
+            border:1px solid red;
+            margin: 0 auto;
+            text-align: center;
+        }*/
+    </style>
+</head>
+<body>
+<div id="container">
+    <!--<p>在浏览器中操控三维元素－Three.js初体验</p>
+    <p>四要素：</p>
+    <ul>
+        <li>场景</li>
+        <li>相机</li>
+        <li>物体</li>
+        <li>渲染器</li>
+    </ul>-->
+</div>
+</body>
+<script>
+    function Three() {
+        this.camera;
+        this.scene;
+        this.renderer;
+        this.mesh;
+        this.container;
+        this.width = window.innerWidth
+        this.height = window.innerHeight
+        this.k = this.width / this.height
+        this.s = 200;// 三维场景缩放系数
+
+        this.init = function () {
+            //
+            //场景
+            this.scene = new THREE.Scene()
+
+            //点光源
+            var point = new THREE.PointLight(0x444444)
+            point.position.set(400,200,300)
+            this.scene.add(point)
+            //环境光
+            var ambient = new THREE.AmbientLight(0x444444)
+            this.scene.add(ambient)
+
+            // 相机
+            //this.camera = new THREE.PerspectiveCamera(70,this.width/this.height, 1,1000);
+            // 正投影相机对象 left,right,top,right near,far
+            this.camera = new THREE.OrthographicCamera(-this.s * this.k,this.s * this.k,this.s,-this.s,1,1000)
+            this.camera.position.set(250,300,200)
+            this.camera.lookAt(this.scene.position)
+            //this.scene.add(this.camera)
+
+            //物质
+            var geometry = new THREE.BoxGeometry(50,50,50) // 创建一个立方体
+            var material = new THREE.MeshLambertMaterial({color:0x0000ff})
+            this.mesh = new THREE.Mesh(geometry,material)
+            this.scene.add(this.mesh)
+
+            // 添加一个球体
+            var sphere = new THREE.SphereGeometry(50,40,40)
+            var sphereMaterial = new THREE.MeshLambertMaterial({color:0xff0000,opacity:1,transparent:false})
+            var sphereMesh = new THREE.Mesh(sphere,sphereMaterial)
+            sphereMesh.translateX(140)
+            this.scene.add(sphereMesh)
+
+            // 添加一个镜面材料
+            var sphere2 = new THREE.SphereGeometry(50,40,40)
+            var sphere2Material = new THREE.MeshPhongMaterial({color:0x0000ff,specular:0x4488ee,shininess:12})
+            var sphere2Mesh = new THREE.Mesh(sphere2,sphere2Material)
+            sphere2Mesh.translateX(-140)
+            this.scene.add(sphere2Mesh)
+
+            // 创建线条对象
+            var geometry = new THREE.Geometry() // 声明一个空的几何体对象
+            var p1 = new THREE.Vector3(10,0,0); // 顶点1坐标
+            var p2 = new THREE.Vector3(0,200,0); // 顶点2坐标
+            geometry.vertices.push(p1,p2); //  顶点坐标添加到geometry对象中
+            var lineMaterial = new THREE.LineBasicMaterial({color:0x0000ff})
+            var lineMesh = new THREE.Line(geometry,lineMaterial)
+            lineMesh.position.set(300,0,0)
+            this.scene.add(lineMesh)
+
+            // 创建点对象
+            var geometry = new THREE.Geometry()
+            var p1 = new THREE.Vector3(10,0,0)
+            var p2 = new THREE.Vector3(0,20,0)
+            var p3 = new THREE.Vector3(15,15,0)
+            geometry.vertices.push(p1,p2,p3)
+            var pointMaterial = new THREE.PointsMaterial({
+                color:0x0000ff,
+                size:10.0
+            })
+            var pointsMesh = new THREE.Points(geometry,pointMaterial)
+            pointsMesh.position.set(250,0,0)
+            this.scene.add(pointsMesh)
+
+            //创建三角形对象
+            var geometry = new THREE.Geometry()
+            var p1 = new THREE.Vector3(0,0,0)
+            var p2 = new THREE.Vector3(80,0,0)
+            var p3 = new THREE.Vector3(0,80,0)
+            geometry.vertices.push(p1,p2,p3)
+            // 顶点颜色
+            var color1 = new THREE.Color(0Xff0000);
+            var color2 = new THREE.Color(0X00ff00);
+            var color3 = new THREE.Color(0X0000ff);
+            var normal = new THREE.Vector3(0,0,1)
+            var face = new THREE.Face3(0,1,2,normal)
+            face.vertexColors.push(color1,color2,color3)
+            geometry.faces.push(face)
+            var material = new THREE.MeshLambertMaterial({
+                vertexColors:THREE.VertexColors,
+                side:THREE.DoubleSide
+            })
+            var mesh = new THREE.Mesh(geometry,material)
+            mesh.position.set(-300,0,0)
+            this.scene.add(mesh)
+
+            // 扇形
+            //var box=new THREE.CircleGeometry(50,40,0,0.5*Math.PI);
+            //var material = new THREE.MeshLambertMaterial()
+
+            //矩形平面
+            var box = new THREE.PlaneGeometry(30,50)
+            var material = new THREE.MeshLambertMaterial({
+                color:0x0000ff,
+                side:THREE.DoubleSide
+            })
+            var mesh = new THREE.Mesh(box,material)
+            mesh.position.set(-400,0,0)
+            this.scene.add(mesh)
+
+            // 圆弧 －－ 点模型
+            var shape = new THREE.Shape()
+            shape.absarc(0,0,100,0,0.5 * Math.PI)
+            var geometry = new THREE.SphereGeometry(shape)
+            var material = new THREE.PointsMaterial({
+                color:0x0000ff,
+                size:10.0
+            })
+            var line = new THREE.Points(geometry,material)
+            line.position.set(-500,0,0)
+            this.scene.add(line)
+
+            var shape = new THREE.Shape();
+            shape.absarc(0,0,100, 0, 0.5*Math.PI);
+            var geometry = new THREE.ShapeGeometry(shape);
+            var material=new THREE.LineBasicMaterial({color:0x0000ff});//材质对象
+            var line=new THREE.Line(geometry,material);//线模型对象
+            line.position.set(-600,0,0)
+            this.scene.add(line)
+
+            var shape = new THREE.Shape();
+            shape.absarc(0,0,100, 0, 0.5*Math.PI);
+            var geometry = new THREE.ShapeGeometry(shape);
+            var material=new THREE.MeshLambertMaterial({
+                color:0x0000ff,//三角面颜色
+                side:THREE.DoubleSide//两面可见
+            });//材质对象
+            var mesh=new THREE.Mesh(geometry,material);//网格模型对象
+            mesh.position.set(-700,0,0)
+            this.scene.add(mesh)
+
+            /**
+             * 创建管道网格模型
+             */
+            var path = new THREE.SplineCurve3([//创建轮廓的扫描轨迹(3D样条曲线)
+                new THREE.Vector3( -10, -50, -50 ),
+                new THREE.Vector3( 10, 0, 0 ),
+                new THREE.Vector3( 8, 50, 50 ),
+                new THREE.Vector3( -5, 0, 100)
+            ]);
+            var geometry = new THREE.TubeGeometry( path, 40, 2, 8, false );
+            var material=new THREE.MeshPhongMaterial({
+                color:0x0000ff,
+                side:THREE.DoubleSide//两面可见
+            });//材质对象
+            var mesh=new THREE.Mesh(geometry,material);//管道网格模型对象
+            mesh.position.set(500,0,0)
+            this.scene.add(mesh);//管道网格模型添加到场景中
+
+            /**
+             * 创建旋转网格模型
+             */
+            var points = [
+                new THREE.Vector2(50,60),
+                new THREE.Vector2(25,0),
+                new THREE.Vector2(50,-60)
+            ];
+            var geometry = new THREE.LatheGeometry(points,30);
+            var material=new THREE.MeshPhongMaterial({
+                color:0x0000ff,//三角面颜色
+                side:THREE.DoubleSide//两面可见
+            });//材质对象
+            material.wireframe = true;//线条模式渲染(查看细分数)
+            var mesh=new THREE.Mesh(geometry,material);//旋转网格模型对象
+            mesh.position.set(550,0,0)
+            this.scene.add(mesh);//旋转网格模型添加到场景中
+
+            /**
+             * 创建网格模型
+             */
+                //几何体对象
+            var cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
+            var box = new THREE.BoxGeometry(40,5,40);//立方体
+            //材质对象
+            var material=new THREE.MeshPhongMaterial({color:0x0000ff});
+            //网格模型对象
+            var cylinderMesh=new THREE.Mesh(cylinder,material);//圆柱
+            var boxMesh=new THREE.Mesh(box,material);//立方体
+            //包装成ThreeBSP对象
+            var cylinderBSP = new ThreeBSP(cylinderMesh);
+            var boxBSP = new ThreeBSP(boxMesh);
+            var result = cylinderBSP.subtract(boxBSP);
+            //ThreeBSP对象转化为网格模型对象
+            var mesh = result.toMesh();
+            mesh.position.set(750,0,0)
+            this.scene.add(mesh);//网格模型添加到场景中
+
+            // 渲染器
+            this.renderer = new THREE.WebGLRenderer({alpha:true})
+            this.renderer.setSize(this.width,this.height)
+            this.renderer.setClearColor(0xb9d3ff,1) // 设置背景色
+            document.body.appendChild(this.renderer.domElement)
+
+            render()
+            var controls = new THREE.OrbitControls(this.camera)
+            //controls.addEventListener('change',render)
+        }
+        render = () => {
+
+            requestAnimationFrame(render)
+            this.mesh.rotation.x += 0.02;
+           // this.mesh.rotation.y += 0.02;
+            this.renderer.render(this.scene,this.camera)
+        }
+
+    }
+    var three = new Three()
+    three.init()
+</script>
+</html>

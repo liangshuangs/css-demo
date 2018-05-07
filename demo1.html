@@ -9,114 +9,292 @@
             margin: 0;
             padding: 0;
         }
-        a{
-            text-decoration: none;
+        .container {
+            width: 500px;
+            height: 400px;
+            margin: 0 auto;
         }
-        .page_hd{
-            height: 60px;
-            background-color: #cccccc;
-            line-height: 60px;
-            padding-left: 20px;
-            font-size: 16px;
-            color:#716F76;
-        }
-        .grids>a{
-            display: inline-block;
-            float: left;
-            box-sizing: border-box;
-            width: 33.33%;
-            height: 50px;
-            line-height: 50px;
-            background-color: #FFFFFF;
-            color: #707070;
-            text-align: center;
-            border-bottom: 1px solid #E5E5E5;
-        }
-        .grids>a:not(:nth-child(3n)){
-            border-right: 1px solid #E5E5E5;
-        }
-        /*flex方法start*/
-        /*.grids{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
 
-        }
-        .grids>a{
-            flex: 0 0 33.33%;
-            height: 50px;
-            line-height: 50px;
-            text-align: center;
-            box-sizing: border-box;
-
-        }
-        .grids>a:not(:nth-child(3n)){
-            border-right: 1px solid #E5E5E5;
-        }
-        .grids>a{
-            border-bottom:1px solid #E5E5E5 ;
-            background-color: #FFFFFF;
-            color: #707070;
-        }*/
-        /*flex方法end*/
-       /* grid方法 start*/
-        /*.grids{
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            grid-template-rows: repeat(3,50px);
-        }
-        .grids>a{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #FFFFFF;
-            color: #707070;
-        }
-        .grids>a:not(:nth-child(3n)){
-            border-right: 1px solid #E5E5E5;
-        }
-        .grids>a{
-            border-bottom: 1px solid #E5E5E5;
-        }*/
-        /* grid方法 end*/
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="page_hd">
-            <p class="page_title">腾讯服务</p>
+        <span id="test">中国是我们的祖国，共产党是我们的领导人</span>
         </div>
-        <!--九宫格start-->
-        <div class="grids">
-            <a href="#">
-                <p class="grid_label">信用卡还款</p>
-            </a>
-            <a href="#">
-                <p class="grid_label">微粒贷借钱</p>
-            </a>
-            <a href="#">
-                <p class="grid_label">手机充值</p>
-            </a>
-            <a href="#">
-                <p class="grid_label">理财通</p>
-            </a>
-            <a href="#">
-                <p class="grid_label">生活缴费</p>
-            </a>
-            <a href="#">
-                <p class="grid_label">Q币充值</p>
-            </a>
-            <a href="#">
-                <p class="grid_label">城市服务</p>
-            </a>
-            <a href="#">
-                <p class="grid_label">腾讯公益</p>
-            </a>
-            <a href="#">
-            </a>
-        </div>
-        <!--九宫格end-->
+
     </div>
+<span>test</span>
 </body>
+<!--<script>
+    let ele = document.getElementsByClassName('container')[0]
+    let width = window.getComputedStyle(ele).width;
+    console.log(width)
+    var a =0;
+    var b = 1;
+    var A = function (a) {
+        A = function (a) {
+            console.log(8)
+            console.log(a+b++)
+        }
+        console.log(a++)
+    }
+    A(1)
+    A(3)
+    let arr = [1,2]
+    let obj = {a:1,b:2}
+    console.log(typeof arr)
+    console.log(typeof obj)
+    console.log(Array.isArray(obj))
+
+    function isArrObj(value) {
+        if (Object.prototype.toString.call(value) === '[object Array]') {
+            console.log(value+'is 数组')
+        } else if (Object.prototype.toString.call(value) === '[object Object]') {
+            console.log(value + 'is 对象')
+        } else {
+            console.log(`${value} 既不是对象也不是数组`)
+        }
+    }
+    isArrObj(arr)
+    isArrObj(obj)
+
+    function deepClone(value) {
+        if (typeof value !== 'object') {
+            return value;
+        }
+        let result = Array.isArray(value) ? [] : {};
+        for (let i in value) {
+            result[i] = typeof value[i] === 'object' ?  deepClone(value[i]) : value[i]
+        }
+        return result
+
+    }
+    // 快速排序
+    function quickSort(arr) {
+        let i,j,left = [],right = [],len = arr.length;
+        if (len <= 1) {
+            return arr;
+        }
+        let midIndex = Math.floor(len/2);
+        let mid = arr.splice(midIndex,1)[0];
+        for (i = 0; i < len - 1; i++) {
+            if (arr[i] < mid) {
+                left.push(arr[i]);
+            }else {
+                right.push(arr[i])
+            }
+        }
+        return quickSort(left).concat([mid],quickSort(right))
+    }
+    // 插入排序
+    function inserSort(arr) {
+        let len = arr.length,i,j,temp;
+        for (i = 0; i < len; i++) {
+            for (j = i-1; j >= 0; j&#45;&#45;) {
+                if (arr[j+1] < arr[j]) {
+                    temp = arr[j+1]
+                    arr[j+1] = arr[j]
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+    //console.log(inserSort([7,2,8,1,3,78]))
+    // 冒泡排序
+    function bubbleSort(arr) {
+        let len = arr.length,i,j,temp;
+        if (len <= 1) {
+            return arr;
+        }
+        for (i = 0; i < len -1; i++) {
+            for (j = 0;j<len-i -1;j++) {
+                if (arr[j+1] < arr[j]) {
+                    temp = arr[j+1]
+                    arr[j+1] = arr[j]
+                    arr[j] = temp
+                }
+            }
+        }
+        return arr
+
+    }
+    //console.log(bubbleSort([7,2,8,1,3,78]))
+    function selectSort(arr) {
+        let len = arr.length,i,j,min,temp;
+        if (len <= 1) {
+            return arr;
+        }
+        for (i = 0; i < len - 1; i++) {
+            min = i
+            for (j = i+1; j < len - 1; j++) {
+                if (arr[j] < arr[min]) {
+                    min = j;
+                }
+
+            }
+            temp = arr[i]
+            arr[i] = arr[min]
+            arr[min] = temp;
+
+        }
+        return arr;
+    }
+    console.log(selectSort([7,2,8,1,3,78]))
+
+    function getQueryUrl(url) {
+        url = url === null ? window.location.url : url;
+        let search = url.substring(url.lastIndexOf('?')+1)
+        let obj = {}
+        let searchArr = search.split('&')
+        for(let i =0; i < searchArr.length; i++) {
+            if (searchArr[i].indexOf('=') >0 ) {
+                let params = searchArr[i].split('=')
+                obj[params[0]] = params[1]
+            }else {
+                obj[searchArr[i]] = null
+            }
+        }
+        return obj
+    }
+    let result = getQueryUrl("https://www.baidu.com?params=43&id=4&class&come=")
+    console.log(result)
+    // 数组降维
+    function toLowArray(arr) {
+        return Array.prototype.concat.apply([],arr);
+        //return Array.prototype.concat.apply([],arr)
+    }
+    console.log(toLowArray([[1,2],[3,4]]))
+</script>-->
+<script>
+    /*process.nextTic(()=>{
+        console.log('process.nextTick')
+        }
+    )*/
+    var p1 = function () {
+        return new Promise(function (reslove,reject) {
+            setTimeout(function () {
+                reslove('promise1')
+            },1000)
+        })
+    }
+    var p2 = function () {
+        return new Promise(function (reslove,reject) {
+            setTimeout(function () {
+                reslove('promise2')
+            },5000)
+        })
+    }
+    var p3 = function () {
+        return new Promise(function (reslove,reject) {
+            setTimeout(function () {
+                reslove('promise3')
+            },3000)
+        })
+    }
+    Promise.all([p1(),p2(),p3()]).then((data)=>{
+        console.log(data)
+    })
+    /*var obj = {
+     webName: "脚本之家",
+     url:"softwhy.com"
+     }
+     console.log(obj.toString());
+     var arr = [1, 2, 3,[4,5]];
+     console.log(typeof arr.toString());
+     let b = {a:1}*/
+    //p1().then((data)=>{console.log(data)})
+
+
+    function toChange(string) {
+        let reg =/(\w+)(-)/g // .{1}表示在－后的第一个位置的字符  g 表示全局匹配
+        let result = string.replace(reg,function($0,$1,$2){
+            console.log($2)
+            //return word.substrng(1,2).toUpperCase()
+        })
+        return result
+    }
+    let change = "on-index-text"
+    console.log(toChange(change))
+    function toChange2(string) {
+        let reg= /(\d+)(-)/g
+        let result = string.replace(reg,function ($0,$1,$2) { // $0为匹配的全部数组  $1为第一个（）匹配的数据 $2（）为第二个（）匹配到的数据
+            return $1+'.'
+        })
+        return result
+    }
+   // console.log(toChange2('2018-5-6')) // 2018.5.6
+    function numberChange(number) {
+        let reg = new RegExp('','g')
+    }
+    //将该num转化为字符串后，全局（/g）正向匹配，看是否符合断言（?=(?:\d{3})+$）部分，直到匹配结束。即遇到 数字 + 该数字后面紧跟连续的三位数字（并且不管这连续的三位数字出现多少次），符合则在该数字（’$1’）后加入逗号，替换的时候忽略（？：）这连续的三位数.
+    function toThousands(num) {
+        return (num || 0).toString().replace(/(\d)(?=(\d{3})+$)/g, function ($0,$1) {
+            console.log($1)
+            }
+        ); // \B表示匹配非单词边界  那么匹配到是2-3之间的位置，然后用','替换
+    }
+    console.log(toThousands(12344))
+    function changeWord(string){
+        let reg = new RegExp("中国|共产党",'g')
+        //let regs = /中国|共产党/g
+        return string.replace(reg,`<span style="color:red">***</span>`
+        )
+    }
+    let string = document.getElementById('test')
+    console.log(string.innerHTML)
+    string.innerHTML = changeWord(string.innerHTML)
+
+//找某个字符串中出现最多的字符和它一共出现多少次
+    /*
+    先把字符串拆为数组，然后进行排序，然后再转为字符串
+    * */
+    function findMore(str) {
+        let arr=str.split("");
+        str=arr.sort().join("");
+        let value = '' // 存放出现最多的字符
+        let index = 0 //存放次数
+        let reg = /(\w)\1+/g // \1+ 表示出现一次以上
+        str.replace(reg,function ($0,$1) {//$0代表整体，$1代表第一个子项
+            if (index < $0.length) {
+                index = $0.length //$0:每一组重复的元素
+                value = $1
+            }
+        })
+        alert('出现最多的字符是'+value+',出现次数是'+index);
+
+    }
+    //findMore('vbbbbhybbfhbbgbbb')
+
+    function findMoreOne(string) {
+        var str="vbbbbhybbfhbbgbbb";
+        var arr=str.split("");
+        str=arr.sort().join("");
+        var value=""; //存放出现最多的字符
+        var index=0; //存放次数
+        var re=/(\w)\1+/g;
+        str.replace(re,function($0,$1){ //$0代表整体，$1代表第一个子项
+            if(index<$0.length){ //$0:每一组重复的元素
+                index=$0.length;
+                value=$1;
+            }
+        })
+        alert('出现最多的字符是'+value+',出现次数是'+index);
+    }
+    //findMoreOne()
+
+    // 去掉字符串的前后的空格
+    function trim(string) {
+        let reg = /\s/g
+        return string.replace(reg,'')
+    }
+    //console.log(trim(' 457657 fhg '))
+    function forntTest(string) {
+        let reg = /a(?:b)/g
+        return string.replace(reg,'*')
+    }
+    console.log(forntTest('abacad')) // ab*c*d
+
+
+</script>
 </html>

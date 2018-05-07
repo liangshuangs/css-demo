@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d-3</title>
+    <script src="../js/three.js"></script>
+    <style>
+        #container{
+            width: 300px;
+            height: 300px;
+            border:1px solid red;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <p>在浏览器中操控三维元素－Three.js初体验</p>
+    <p>四要素：</p>
+    <ul>
+        <li>场景</li>
+        <li>相机</li>
+        <li>物体</li>
+        <li>渲染器</li>
+    </ul>
+</div>
+</body>
+<script>
+    function Three() {
+        this.camera;
+        this.scene;
+        this.renderer;
+        this.mesh;
+        this.container;
+        this.width;
+        this.height;
+
+        this.init = function () {
+            //
+            this.container = document.getElementById('container')
+            this.width = this.container.offsetWidth
+            this.height = this.container.offsetHeight
+
+            //场景
+            this.scene = new THREE.Scene()
+
+            // 透视相机
+            this.camera = new THREE.PerspectiveCamera(70,this.width/this.height, 1,1000);
+            this.camera.position.set(3,4,5)
+            this.camera.lookAt(new THREE.Vector3(0,0,0))
+            this.scene.add(this.camera)
+
+            //物质 点云
+            this.mesh = pointsGenerator(500)
+
+            this.scene.add(this.mesh)
+
+
+            // 渲染器
+            this.renderer = new THREE.WebGLRenderer()
+            this.renderer.setSize(this.width,this.height)
+            this.container.appendChild(this.renderer.domElement)
+
+            render()
+        }
+        // 创建点及点云
+        pointsGenerator = (num) => {
+            let geometry = new THREE.Geometry()
+            for (let i = 0; i < num; i++) {
+                let vector = new THREE.Vector3(Math.random() * 10,Math.random() * 10,Math.random() * 10)
+                geometry.vertices.push(vector)
+            }
+            let material = new THREE.PointsMaterial({size:0.2})
+            let points = new THREE.Points(geometry,material)
+            return points
+        }
+        render = () => {
+
+            requestAnimationFrame(render)
+            /*this.mesh.rotation.x += 0.02;
+            this.mesh.rotation.y += 0.02;*/
+            this.renderer.render(this.scene,this.camera)
+        }
+
+    }
+    var three = new Three()
+    three.init()
+</script>
+</html>

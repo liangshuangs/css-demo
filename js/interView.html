@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://johnson2heng.github.io/three.js-demo/lib/three.js"></script>
+    <script src="https://johnson2heng.github.io/three.js-demo/lib/js/controls/OrbitControls.js"></script>
+    <script src="https://johnson2heng.github.io/three.js-demo/lib/js/libs/stats.min.js"></script>
+    <script src="https://johnson2heng.github.io/three.js-demo/lib/js/libs/dat.gui.min.js"></script>
+</head>
+<style>
+    html,body {
+        margin: 0;
+        height: 100%;
+    }
+    #canvas {
+        height: 204px;
+        width: 370px;
+    }
+</style>
+<body onload="draw();">
+<div class="box">
+<canvas id="canvas"></canvas>
+</div>
+</body>
+<script>
+    let el = document.getElementById('canvas');
+    let width = el.innerWidth,height = el.innerHeight;
+    // 渲染器
+    var renderer;
+    function initRender() {
+        renderer = new THREE.WebGLRenderer({antialias:true})
+        renderer.setSize(width,height)
+        el.appendChild(renderer.domElement)
+    }
+    var camera;
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera(45,width/height,1,10000)
+        camera.target = new THREE.Vector3(0,100,0)
+    }
+    var scene;
+    function initScene() {
+        scene = new THREE.Scene();
+    }
+    var light;
+    function initLight() {
+        
+    }
+    function initModel() {
+        var object = new THREE.AxisHelper(500);
+        // 声明一个球体
+        var geometry = new THREE.SphereBufferGeometry(500,60,40)
+        // 反转x轴上的几何图形，使所有的面点向内
+        geometry.scale(-1,1,1)
+        // 声明球体纹理
+        var material = new THREE.MeshBasicMaterial({
+            map:new THREE.TextureLoader().load('../img/2.jpeg')
+        });
+        mesh = new THREE.Mesh(geometry,material)
+        scene.add(mesh)
+    }
+    // 初始化性能插件
+    var stats;
+    function initStats() {
+        stats = new Stats();
+        document.body.appendChild(stats.dom)
+    }
+    //用户交互插件，鼠标左键按住旋转，右键按住平移
+    var controls;
+    function initControls() {
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // 使动画循环使用时阻尼或自转 意思是否有惯性
+        controls.enableDamping = true;
+        //是否可以缩放
+        controls.enableZoom = true;
+        //是否自动旋转
+        controls.autoRotate = false;
+        //设置相机距离原点的最远距离
+        controls.minDistance = 20;
+        //设置相机距离原点的最远距离
+        controls.maxDistance = 10000;
+        //是否开启右键拖拽
+        controls.enablePan = true;
+    }
+    //生成gui设置配置项
+    var gui;
+    function initGui() {
+        //声明一个保存需求修改的相关数据的对象
+        gui = {
+
+        };
+        var datGui = new dat.GUI();
+        //将设置属性添加到gui当中，gui.add(对象，属性，最小值，最大值）
+    }
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+
+    //窗口变动触发的函数
+    function onWindowResize() {
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        render();
+        renderer.setSize(width, height);
+
+    }
+
+    function animate() {
+        //更新控制器
+        controls.update();
+        render();
+
+        //更新性能插件
+        stats.update();
+        requestAnimationFrame(animate);
+    }
+
+    function draw() {
+        initRender();
+        initScene();
+        initCamera();
+        initLight();
+        initModel();
+        initControls();
+        initStats();
+        initGui();
+
+        animate();
+        window.onresize = onWindowResize;
+    }
+</script>
+</html>
