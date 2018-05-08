@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一个正方形</title>
+</head>
+<style>
+    body{
+        padding: 0;
+        margin: 0;
+    }
+    #box {
+        border: 1px solid red;
+        width: 100px;
+        height: 100px;
+    }
+
+</style>
+<body>
+<div id="box">
+    {{name}}
+</div>
+</body>
+<script>
+    class Vue {
+        constructor(options={}) {
+            this.data = options.data
+            this.el = options.el
+
+            el.innerHTML = this.data['name']
+            // 劫持数据
+            observe(this.data)
+            // 添加观察者
+            new Watcher(this,'name',function (val,oldVal) {
+                el.innerHTML = val
+            })
+
+        }
+    }
+    // 劫持数据
+    observe=(data)=> {
+       Object.keys(data).forEach(key=>definedValue(data,key,data[key]))
+    }
+    // 使用Object.defineProperty 劫持数据
+    definedValue = (data,key,val)=> {
+        let dep = new Dep()
+        Object.defineProperty(data,key,{
+            configurable:true,
+            enumerable:true,
+            get:()=>{
+                // 添加订阅者
+                if (Dep.target) {
+                    dep.addSub()
+                }
+                return val
+            },
+            set:(newVal)=>{
+                if (val === newVal) return
+                val = newVal
+                // 遍历所有的订阅者，然后进行更新
+                dep.update()
+            }
+
+        })
+    }
+    // 订阅发布中心
+    class Dep {
+        constructor() {
+            this.subs = [] // 存放订阅者的信息
+        }
+        // 添加订阅者的信息
+        addSub() {
+            this.subs.push(Dep.target) // Dep.target为一个全局的对象，是Watcher的实例，拥有Watcher的一切属性和方法
+        }
+        // 更新
+        update() {
+            this.subs.forEach(sub=>{
+                sub.update() //  调用Watcher的实例的更新方法
+            })
+        }
+
+
+    }
+    // 观察者
+    function Watcher(vm,node,fn) {
+        this.fn = fn // 更新视图的方法
+        this.vm = vm // Vue的实例，拥有Vue的一切方法和属性
+        this.node = node // Vue的实例的data的key
+        this.value = this.get()  // 触发 Object.defineProperty的get方法，然后触发添加订阅者方法
+    }
+    Watcher.prototype = {
+        update:function () {
+            this.run()
+        },
+        run:function () {
+            let value = this.vm.data[this.node]
+            let oldVal = this.value
+            if (value !== oldVal) {
+                this.value = value
+                this.fn.call(this.vm,value,oldVal)
+            }
+        },
+        get:function () {
+            Dep.target = this // this表示当前的Watcher的实例
+            var value = this.vm.data[this.node] // 触发 Object.defineProperty的get方法
+            Dep.target = null
+            return value
+        }
+    }
+
+
+    let el = document.getElementById('box')
+    const vue = new Vue({
+        data:{
+            name:'test'
+        },
+        el:el
+    })
+    setTimeout(()=>{
+        vue.data.name="test1"
+    },1000)
+
+</script>
+</html>

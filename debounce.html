@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>去抖和节流</title>
+</head>
+<body>
+<div>
+    <ul>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+
+
+    </ul>
+</div>
+</body>
+
+<script>
+    //防抖
+    /*
+    * 思路：当滚动条在滚动的时候，触发滚动事件，这里设置5毫秒执行一次方法
+    * 如果在这5毫秒又触发了一次事件，则会删除上一次的调用
+    * debounce方法，先删除上一次的调用，然后再执行setTimeout
+    * 防抖的作用保证了滚动事件必须间隔了5毫秒以上执行一次
+    * */
+    window.onscroll=function () {
+        //lazyload()
+        debounce(lazyload,window)
+    }
+    function debounce(method,context) {
+        clearTimeout(method.timeout)
+        method.timeout = setTimeout(()=>{
+            method.call(context)
+        },500)
+    }
+    function lazyload () {
+        console.log('onscroll')
+    }
+
+    var canCel = true
+    window.onscroll = function () {
+        if (!canCel) {
+            return
+        }
+        canCel = false
+        setTimeout(()=>{
+            throttle(lazyload,window)
+            canCel = true
+        },500)
+    }
+    function throttle(method,context) {
+        method.call(context)
+    }
+</script>
+</html>
